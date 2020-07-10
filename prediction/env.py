@@ -46,8 +46,8 @@ def downloadSource():
                                             dest_path=RESSOURCE_PATH+'ressource.zip', unzip=True)
         os.remove(RESSOURCE_PATH+"/ressource.zip")
 
-
-cnx = sqlite3.connect( RESSOURCE_PATH + 'database.sql')
+downloadSource()
+cnx = sqlite3.connect(RESSOURCE_PATH + 'database.sql')
 
 model = load(open(RESSOURCE_PATH + 'MLPModel.pkl', 'rb'))
 scaler = load(open(RESSOURCE_PATH + 'MLPScaller.pkl', 'rb'))
