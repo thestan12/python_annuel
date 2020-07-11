@@ -41,19 +41,15 @@ def jsonL(request_json):
 def requesToResponse(request):
     response_json = None
     print(request)
-    try:
-        request_json = jsonL(json.loads(request))
-        response = predictFromTeamIds(request_json['home_id'], request_json['away_id'], request_json['id'])
-        predictionIA = predictionBetweenTwoTeams(request_json["home_name"], request_json["away_name"])
-        responseString = ", 'home_goal_prediction':'{}', 'away_goal_prediction':'{}'".format(predictionIA.item(0), predictionIA.item(1))
-        response_json = response + responseString + "}"
-        postPredictMatchResponse(response_json)
-    except KeyError as e:
-        print(e)
-        print("key error")
-        response_json = "Error"
-    except:
-        response_json = "Error"
+
+    request_json = jsonL(json.loads(request))
+    response = predictFromTeamIds(request_json['home_id'], request_json['away_id'], request_json['id'])
+    predictionIA = predictionBetweenTwoTeams(request_json["home_name"], request_json["away_name"])
+    responseString = '", "home_goal_prediction":"{}", "away_goal_prediction":"{}"'.format(predictionIA.item(0), predictionIA.item(1))
+    response_json = response + responseString + "}"
+
+
+    postPredictMatchResponse(response_json)
     return response_json
 
 
@@ -64,13 +60,38 @@ def predictMatchCallBack(ch, method, properties, body):
     print(body)
     requesToResponse(body)
 
+def loadResponseTournamentFromDisk(response):
+    responseKey = list(response.keys())
+    thirdPlace = ""
+    firstPlace = ',"firstPlace":"{}"'.format(responseKey[0])
+    secondPlace = ',"secondPlace":"{}"'.format(responseKey[1])
+
+    firstPlacePrediction = ',"firstPlacePrediction":"{}"'.format(response[responseKey[0]])
+    secondPlacePrediction = ',"secondPlacePrediction":"{}"'.format(response[responseKey[1]])
+
+    thirdPlace = "-1"
+    thirdPlacePrediction = "-1"
+
+    if len(responseKey) > 2:
+        thirdPlace = responseKey[2]
+        thirdPlacePrediction = response[responseKey[2]]
+
+
+    thirdPlace = ',"thirdPlace":"{}" '.format(thirdPlace)
+    thirdPlacePrediction = ',"thirdPlacePrediction":"{}"'.format(thirdPlacePrediction)
+
+    thirdPlace += thirdPlacePrediction
+
+    return firstPlace + secondPlace + firstPlacePrediction + secondPlacePrediction + thirdPlace
+
 def predictTournamentCallBack(ch, method, properties, body):
     response = None
+    print(body)
     try:
         request = json.loads(body)
-        shortNameList = teamAPIIdToShortName(request["id_team_list"])
+        shortNameList = teamAPIIdToShortName(request["teamsId"])[:3]
         response = PredictTournament(shortNameList)
-        response = '"id": "{}", "response" : {}'.format(str(request["id"]), str(response))
+        response = '"id": "{}" {}'.format(str(request["id"]), str(loadResponseTournamentFromDisk(response)))
         response = "{" + response + "}"
     except ValueError:
         response = str(ValueError)

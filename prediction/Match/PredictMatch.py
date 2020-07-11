@@ -80,23 +80,29 @@ def rbComportement(home_id, away_id):
 
     cur.execute(RB_REQUEST_INSERT.format(home_id, away_id, home_response, away_response))
 
-    return [home_response, away_response]
+    return np.array([home_response, away_response])
 
 def predictionBetweenTwoTeams(ShortNameHomeTeam, ShortNameAwayTeam):
     home_id = getDbApiIdFromShortname(ShortNameHomeTeam)
     away_id = getDbApiIdFromShortname(ShortNameAwayTeam)
-
+    retour = None
     if home_id is None or away_id is None :
         if home_id is None:
             home_id = ShortNameHomeTeam
         if away_id is None:
             away_id = ShortNameAwayTeam
 
-        return rbComportement(home_id, away_id)
+        retour = rbComportement(home_id, away_id)
+        print(type(retour))
+        print(retour)
+        return retour
     try:
-        return IAComportement(home_id, away_id)
+        retour = IAComportement(home_id, away_id)
     except:
-        return rbComportement(home_id, away_id)
+        retour = rbComportement(home_id, away_id)
+    print(type(retour))
+    print(retour)
+    return retour
 
 def PredictTournament(ShortNameList):
     responses = {}

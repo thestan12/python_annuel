@@ -2,6 +2,7 @@ import sqlite3
 
 from pickle import load
 import pandas as pd
+import numpy as np
 import sklearn, os
 
 from os import path

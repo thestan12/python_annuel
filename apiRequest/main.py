@@ -58,7 +58,7 @@ def getLastFixtureIdBetweenTwoTeam(homeid, awayid):
 
 
 def getPredictionBetweenTwoTeams(homeid, awayid):
-    fixtureId = getLastFixtureIdBetweenTwoTeam(33, 34)
+    fixtureId = getLastFixtureIdBetweenTwoTeam(homeid, awayid)
     result = getPredictByFixture(fixtureId)
     return json.loads(result.content)
 
