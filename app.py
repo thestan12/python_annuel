@@ -12,16 +12,17 @@ connection = pika.BlockingConnection(params)
 channel = connection.channel() # start a channel
 
 def postPredictMatchResponse(result):
-    channel.queue_declare(queue='predict_match_response')  # Declare a queue
+    print(result)
+    channel.queue_declare(queue='predict_match_response_test')  # Declare a queue
     channel.basic_publish(exchange='',
-                          routing_key='predict_match_response',
+                          routing_key='predict_match_response_test',
                           body=result)
 
 def postPredictTournamentResponse(result):
     print(result)
-    channel.queue_declare(queue='predict_tournament_response')  # Declare a queue
+    channel.queue_declare(queue='predict_tournament_response_test')  # Declare a queue
     channel.basic_publish(exchange='',
-                          routing_key='predict_tournament_response',
+                          routing_key='predict_tournament_response_test',
                           body=result)
 
 def jsonL(request_json):
@@ -79,15 +80,15 @@ def predictTournamentCallBack(ch, method, properties, body):
 
 initViews()
 
-
-
-
-
 print("serveur chargé")
 
-channel.queue_declare(queue='predict_match')
+channel.queue_declare(queue='predict_match_test')
+channel.queue_declare(queue='predict_match_test')
+channel.queue_declare(queue='predict_tournament_test')
+channel.queue_declare(queue='hi')
 
-channel.basic_consume(queue="predict_match", on_message_callback=predictMatchCallBack, auto_ack=True)
-channel.basic_consume(queue="predict_tournament", on_message_callback=predictTournamentCallBack, auto_ack=True)
+channel.basic_consume(queue="hi", on_message_callback=callback, auto_ack=True)
+channel.basic_consume(queue="predict_match_test", on_message_callback=predictMatchCallBack, auto_ack=True)
+channel.basic_consume(queue="predict_tournament_test", on_message_callback=predictTournamentCallBack, auto_ack=True)
 
 channel.start_consuming()
