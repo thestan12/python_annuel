@@ -88,7 +88,7 @@ channel.queue_declare(queue='predict_tournament')
 channel.queue_declare(queue='hi')
 
 channel.basic_consume(queue="hi", on_message_callback=callback, auto_ack=True)
-channel.basic_consume(queue="predict_match_test", on_message_callback=predictMatchCallBack, auto_ack=True)
+channel.basic_consume(queue="predict_match", on_message_callback=predictMatchCallBack, auto_ack=True)
 channel.basic_consume(queue="predict_tournament", on_message_callback=predictTournamentCallBack, auto_ack=True)
 
 channel.start_consuming()
