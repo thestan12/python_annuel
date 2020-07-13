@@ -42,4 +42,4 @@ stages:
         azureSubscription: 'Free Trial (ad6a1796-06cd-4342-96b8-cf0c2ccd3098)'
         scriptType: 'ps'
         scriptLocation: 'inlineScript'
-        inlineScript: 'az container create --resource-group annuel --name mycontainer --image serviceregistryesgi.azurecr.io/thestanpythonannuel:latest --registry-login-server serviceregistryesgi.azurecr.io --registry-username serviceregistryesgi --registry-password 5f0pOPd0oPcSUSNWSXhiDgC/4211JX1a'
+        inlineScript: 'az container create --resource-group annuel --name mycontainer --image serviceregistryesgi.azurecr.io/thestanpythonannuel:latest --registry-login-server serviceregistryesgi.azurecr.io --registry-username serviceregistryesgi --registry-password 5f0pOPd0oPcSUSNWSXhiDgC/4211JX1a'
