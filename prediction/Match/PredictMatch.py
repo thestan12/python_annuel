@@ -64,16 +64,14 @@ def IAComportement(homeId, awayId):
     FULL_REQUEST = buildFullRequest(homeId, awayId)
     AllMatch = pd.read_sql_query(FULL_REQUEST, cnx)
     X_test_scaled = scaler.transform(AllMatch)
-    return model.predict(X_test_scaled)[0]
+    return np.array(model.predict(X_test_scaled)[0])
 
 def rbComportement(home_id, away_id):
     response = ""
-
-
     AllMatch = pd.read_sql_query(RB_REQUEST_SELECT.format(str(home_id), str(away_id)), cnx)
 
     if(len(AllMatch) > 0):
-        return [AllMatch['home_goal'].iloc[0], AllMatch['away_goal'].iloc[0]]
+        return np.array([AllMatch['home_goal'].iloc[0], AllMatch['away_goal'].iloc[0]])
 
     home_response = random.uniform(0, 3)
     away_response = random.uniform(0, 3)

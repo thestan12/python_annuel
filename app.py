@@ -112,4 +112,9 @@ channel.basic_consume(queue="hi", on_message_callback=callback, auto_ack=True)
 channel.basic_consume(queue="predict_match", on_message_callback=predictMatchCallBack, auto_ack=True)
 channel.basic_consume(queue="predict_tournament", on_message_callback=predictTournamentCallBack, auto_ack=True)
 
-channel.start_consuming()
+start = True
+while(start):
+    try :
+        channel.start_consuming()
+    except ValueError:
+        print("ERREUR")
